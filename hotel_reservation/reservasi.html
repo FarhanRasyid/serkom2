@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Reservation - Reservasi</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<script>
+    function calculatePrice() {
+        const roomType = document.querySelector('input[name="room_type"]:checked').value;
+        const duration = parseInt(document.getElementById('duration').value);
+        const breakfast = document.getElementById('breakfast').checked;
+        
+        let pricePerNight = 0;
+        if (roomType === 'standard') {
+            pricePerNight = 500000;
+        } else if (roomType === 'deluxe') {
+            pricePerNight = 750000;
+        } else if (roomType === 'family') {
+            pricePerNight = 1000000;
+        }
+
+        let totalPrice = pricePerNight * duration;
+
+        if (duration > 3) {
+            totalPrice *= 0.9;  // Diskon 10%
+        }
+
+        if (breakfast) {
+            totalPrice += 80000 * duration;
+        }
+
+        document.getElementById('price').value = pricePerNight;
+        document.getElementById('total_payment').value = totalPrice;
+    }
+</script>
+<body>
+    <header>
+        <h1>Hotel pararaja</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="produk.html">Produk</a></li>
+            <li><a href="reservasi.html">Reservasi</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h2>Formulir Reservasi</h2>
+        <form action="process_reservation.php" method="post">
+            <div class="form-group">
+                <label for="name">Nama Pemesan</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="gender">Jenis Kelamin</label>
+                <input type="radio" id="male" name="gender" value="male">Laki-Laki
+                <input type="radio" id="female" name="gender" value="female">Perempuan
+            </div>
+            <div class="form-group">
+                <label for="id_number">Nomor Identitas</label>
+                <input type="text" id="id_number" name="id_number" maxlength="16" required>
+            </div>
+            <div class="form-group">
+                <label>Tipe Kamar</label>
+                <input type="radio" name="room_type" value="standard" onclick="calculatePrice()" required> Standar (Rp 500.000)
+                <input type="radio" name="room_type" value="deluxe" onclick="calculatePrice()" required> Deluxe (Rp 750.000)
+                <input type="radio" name="room_type" value="family" onclick="calculatePrice()" required> Family (Rp 1.000.000)
+            <div class="form-group">
+                <label for="price">Harga</label>
+                <input type="text" id="price" name="price" readonly>
+            </div>
+            <div class="form-group">
+                <label for="booking_date">Tanggal Pemesanan</label>
+                <input type="date" id="booking_date" name="booking_date" required>
+            </div>
+            <div class="form-group">
+                <label for="duration">Durasi Menginap (Malam)</label>
+                <input type="number" id="duration" name="duration" oninput="calculatePrice()" required>
+            </div>
+            <div>
+                <label for="breakfast">Termasuk Breakfast (Rp 80.000/malam)</label>
+                <input type="checkbox" id="breakfast" name="breakfast" onclick="calculatePrice()">
+            </div>
+            <div class="form-group">
+                <label for="total_payment">Total Bayar</label>
+                <input type="number" id="total_payment" name="total_payment" required>
+            </div>
+            <input type="submit" value="Submit Reservasi">
+        </form>
+    </div>
+</body>
+</html>
